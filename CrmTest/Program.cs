@@ -1,4 +1,4 @@
-using CrmTest.Data;
+using CrmTest.Data.ApplicationIdentity;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
