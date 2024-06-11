@@ -4,9 +4,9 @@ using Microsoft.EntityFrameworkCore;
 
 namespace CrmTest.Data
 {
-    public class ApplicationDbContext : IdentityDbContext<IdentityUser<int>, IdentityRole<int>, int>
+    public class ApplicationIdentityDbContext : IdentityDbContext<IdentityUser<int>, IdentityRole<int>, int>
     {
-        public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
+        public ApplicationIdentityDbContext(DbContextOptions<ApplicationIdentityDbContext> options)
             : base(options)
         {
    
