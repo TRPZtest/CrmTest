@@ -1,4 +1,6 @@
 using CrmTest.Data.ApplicationIdentity;
+using CrmTest.Data.CrmData;
+using CrmTest.Services;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
@@ -8,7 +10,11 @@ var builder = WebApplication.CreateBuilder(args);
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection") ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
 builder.Services.AddDbContext<ApplicationIdentityDbContext>(options =>
     options.UseSqlServer(connectionString));
+builder.Services.AddDbContext<CrmContext>(options =>
+    options.UseSqlServer(connectionString));
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
+
+builder.Services.AddTransient<EmployeesService>();
 
 builder.Services.AddDefaultIdentity<IdentityUser<int>>(options => options.Password.RequireNonAlphanumeric = false)
     .AddEntityFrameworkStores<ApplicationIdentityDbContext>();
