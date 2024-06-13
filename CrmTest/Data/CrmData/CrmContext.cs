@@ -7,13 +7,10 @@ namespace CrmTest.Data.CrmData;
 
 public partial class CrmContext : DbContext
 {
-    public CrmContext()
-    {
-    }
-
     public CrmContext(DbContextOptions<CrmContext> options)
         : base(options)
     {
+        
     }
 
     public virtual DbSet<Employee> Employees { get; set; }
