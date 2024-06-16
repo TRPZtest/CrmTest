@@ -1,4 +1,5 @@
 using CrmTest.Data.ApplicationIdentity;
+using CrmTest.Data.ApplicationIdentityData;
 using CrmTest.Data.CrmData;
 using CrmTest.Services;
 using Microsoft.AspNetCore.Identity;
@@ -16,11 +17,17 @@ builder.Services.AddDbContext<CrmContext>(options =>
     .UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking));
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
-builder.Services.AddTransient<EmployeesService>();
 
-builder.Services.AddDefaultIdentity<IdentityUser<int>>(options => options.Password.RequireNonAlphanumeric = false)
+
+builder.Services.AddDefaultIdentity<ApplicationUser>(options => options.Password.RequireNonAlphanumeric = false)
     .AddEntityFrameworkStores<ApplicationIdentityDbContext>();
 builder.Services.AddControllersWithViews();
+
+builder.Services.AddScoped<EmployeesRepository>();
+builder.Services.AddScoped<AddEditEmployeeModelService>();
+builder.Services.AddScoped<EmailService>();
+builder.Services.AddScoped<AddUserService>();
+
 
 var app = builder.Build();
 

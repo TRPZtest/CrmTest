@@ -1,17 +1,16 @@
-﻿using CrmTest.Data.CrmData;
-using CrmTest.Data.CrmData.Entities;
+﻿using CrmTest.Data.CrmData.Entities;
 using Microsoft.EntityFrameworkCore;
 
-namespace CrmTest.Services
+namespace CrmTest.Data.CrmData
 {
-    public class EmployeesService
+    public class EmployeesRepository
     {
         private readonly CrmContext _context;
 
-        public EmployeesService(CrmContext context) 
+        public EmployeesRepository(CrmContext context)
         {
             _context = context;
-        }   
+        }
 
         public async Task<List<Employee>> GetAllAsync()
         {
@@ -43,7 +42,7 @@ namespace CrmTest.Services
         {
             var positions = await _context.Positions.AsNoTracking().ToListAsync();
 
-            return positions;   
+            return positions;
         }
 
         public async Task<List<Employee>> GetByPositionAsync(string positionName)
@@ -56,11 +55,13 @@ namespace CrmTest.Services
             return employees;
         }
 
-        public async Task AddEmployeeAsync(Employee employee)
+        public async Task<int> AddEmployeeAsync(Employee employee)
         {
             await _context.Employees.AddAsync(employee);
 
             await _context.SaveChangesAsync();
+
+            return employee.Id;
         }
 
         public async Task UpdateEmployeeAsync(Employee employee)

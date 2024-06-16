@@ -1,4 +1,6 @@
-﻿using CrmTest.Data.CrmData.Entities;
+﻿using CrmTest.Data.CrmData;
+using CrmTest.Data.CrmData.Entities;
+using CrmTest.Helpers;
 using CrmTest.Models;
 using CrmTest.Services;
 using Microsoft.AspNetCore.Mvc;
@@ -8,54 +10,48 @@ namespace CrmTest.Controllers
     [Route("[controller]/[action]")]
     public class EmployeesController : Controller
     {
-        private readonly EmployeesService _employeesService;
-
-        public EmployeesController(EmployeesService employeesService) 
-        {
-            _employeesService = employeesService;
+        private readonly EmployeesRepository _employeesRepository;       
+        
+        public EmployeesController(EmployeesRepository employeesRepository) 
+        {            
+            _employeesRepository = employeesRepository;         
         }
 
         [Route("/Lists/Employees/")]
         public async Task<IActionResult> List()
         {
-            var employees = await _employeesService.GetAllAsync();
+            var employees = await _employeesRepository.GetAllAsync();
             return View(employees);
         }
 
         [HttpGet]
-        public async Task<IActionResult> Add()
-        {
-            var viewModel = new AddEditEmployeeModel();
-            viewModel.Subdivisions = await _employeesService.GetAllSubdivisionsAsync();
-            viewModel.Positions = await _employeesService.GetAllPositionsAsync();
-            viewModel.Hrs = await _employeesService.GetByPositionAsync("HR Manager");
+        public async Task<IActionResult> Add([FromServices] AddEditEmployeeModelService service)
+        {      
+            var viewModel = await service.GetViewModel();
+          
             return View(viewModel);
         }
 
         [HttpPost]
-        public async Task<IActionResult> Add([FromForm]Employee employee)
+        public async Task<IActionResult> Add([FromForm]EmployeeModel employee, [FromServices] AddUserService service)
         {
-            await _employeesService.AddEmployeeAsync(employee);
+            await service.AddUserAsync(employee);
 
             return RedirectToAction("List");
         }
 
         [HttpGet]
-        public async Task<IActionResult> Edit([FromQuery]int id)
+        public async Task<IActionResult> Edit([FromQuery]int id, [FromServices]AddEditEmployeeModelService service)
         {
 
-            var viewModel = new AddEditEmployeeModel();
-            viewModel.Employee = await _employeesService.GetByIdAsync(id);
-            viewModel.Subdivisions = await _employeesService.GetAllSubdivisionsAsync();
-            viewModel.Positions = await _employeesService.GetAllPositionsAsync();
-            viewModel.Hrs = await _employeesService.GetByPositionAsync("HR Manager");
+            var viewModel = await service.GetViewModel(id);
             return View(viewModel);
         }
 
         [HttpPost]
-        public async Task<IActionResult> Edit([FromForm] Employee employee)
+        public async Task<IActionResult> Edit([FromForm] Employee model)
         {
-            await _employeesService.UpdateEmployeeAsync(employee);
+            await _employeesRepository.UpdateEmployeeAsync(model);
             return RedirectToAction("List");
         }
     }

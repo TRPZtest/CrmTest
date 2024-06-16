@@ -17,7 +17,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Data\CrmData\Entities\" />
+    <Folder Include="NewFolder\" />
   </ItemGroup>
 
 </Project>
