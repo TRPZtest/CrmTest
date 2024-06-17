@@ -6,6 +6,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 namespace CrmTest.Data.ApplicationIdentityData
 {
     public class ApplicationUser : IdentityUser<int>
-    {   
+    {
+
     }
 }

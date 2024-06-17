@@ -1,4 +1,5 @@
-﻿using System;
+﻿using CrmTest.Data.ApplicationIdentityData;
+using System;
 using System.Collections.Generic;
 
 namespace CrmTest.Data.CrmData.Entities;
@@ -6,6 +7,7 @@ namespace CrmTest.Data.CrmData.Entities;
 public partial class Employee
 {
     public int Id { get; set; }
+    public int UserId { get; set; }
 
     public string FullName { get; set; } = null!;
 
@@ -26,6 +28,7 @@ public partial class Employee
     public virtual ICollection<Employee> InversePeoplePartner { get; set; } = new List<Employee>();
 
     public virtual ICollection<LeaveRequest> LeaveRequests { get; set; } = new List<LeaveRequest>();
+    public virtual ApplicationUser User { get; set; } = new();
 
     public virtual Employee? PeoplePartner { get; set; }
 

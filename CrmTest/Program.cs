@@ -1,9 +1,11 @@
 using CrmTest.Data.ApplicationIdentity;
 using CrmTest.Data.ApplicationIdentityData;
 using CrmTest.Data.CrmData;
+using CrmTest.Identity;
 using CrmTest.Services;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -17,19 +19,20 @@ builder.Services.AddDbContext<CrmContext>(options =>
     .UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking));
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
-
-
 builder.Services.AddDefaultIdentity<ApplicationUser>(options => options.Password.RequireNonAlphanumeric = false)
+    .AddRoles<ApplicationRole>() 
     .AddEntityFrameworkStores<ApplicationIdentityDbContext>();
-builder.Services.AddControllersWithViews();
+
+builder.Services.AddControllersWithViews(); 
 
 builder.Services.AddScoped<EmployeesRepository>();
 builder.Services.AddScoped<AddEditEmployeeModelService>();
 builder.Services.AddScoped<EmailService>();
 builder.Services.AddScoped<AddUserService>();
 
-
 var app = builder.Build();
+
+await IdentityConfiguration.AddRoles(app.Services);
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
