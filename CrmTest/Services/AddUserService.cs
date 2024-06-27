@@ -12,21 +12,18 @@ namespace CrmTest.Services
     {
         private readonly EmailService _emailService;
         private readonly ILogger<AddUserService> _logger;
-        private readonly UserManager<ApplicationUser> _userManager;
-        private readonly SignInManager<ApplicationUser> _signInManager;
+        private readonly UserManager<ApplicationUser> _userManager;      
         private readonly EmployeesRepository _employeesRepository;
 
         public AddUserService(
-            UserManager<ApplicationUser> userManager, 
-            SignInManager<ApplicationUser> signInManager, 
+            UserManager<ApplicationUser> userManager,           
             EmployeesRepository employeesRepository, 
             ILogger<AddUserService> logger,
             EmailService emailService) 
         {
             _emailService = emailService;
             _logger = logger;
-            _userManager = userManager;
-            _signInManager = signInManager;
+            _userManager = userManager;           
             _employeesRepository = employeesRepository;
         }
 
@@ -41,6 +38,8 @@ namespace CrmTest.Services
             if (result.Succeeded)
             {                
                 await _userManager.AddPasswordAsync(user, password);
+
+                model.UserId = user.Id;
 
                 var newEmployeeId = await _employeesRepository.AddEmployeeAsync(model);
 
