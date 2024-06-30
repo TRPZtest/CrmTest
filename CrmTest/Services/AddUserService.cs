@@ -46,8 +46,8 @@ namespace CrmTest.Services
                 await _userManager.AddClaimAsync(user, new Claim("EmployeeId", newEmployeeId.ToString()));
             }
 
-            _emailService.SendEmailAsync(model.Email, "password", $"Hi {model.FullName}!\nYou password is: {password}");
-        }   
+            _emailService.SendEmailAsync(model.Email, "password", $"Hi {model.FullName}!\nYour password is: {password}");
+        }    
 
         private string GeneratePassword()
         {
